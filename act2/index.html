@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script>
+    // Esto es la url de la api.
+    const url = "https://calculadora-server.herokuapp.com/apis";
+    // Esto un fetch de acuerdo a los valores que requieras.
+    const makeFetch = (api, val1, val2) => {
+      return fetch(url, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          api,
+          val1,
+          val2
+        }),
+      })
+        .then(response => response.json());
+    };
+    // Se ingresan los valores en forma de string usando el metodo prompt.
+    const a = prompt("Valor 1: ");
+    const b = prompt("Valor 2: ");
+
+    // Aqui esta el arreglo de promesas.
+    const promises = [
+      makeFetch("suma", a, b),
+      makeFetch("resta", a, b),
+      makeFetch("multiplicacion", a, b),
+      makeFetch("division", a, b),
+      ]
+
+    // Aca se resuelven todas las promesas y se imprime los resultados.
+    Promise.allSettled(promises)
+      .then(values => values.map(value => console.log(value)))
+      .catch(error => console.error(error));
+  </script>
+  </body>
+  
+  </html>
